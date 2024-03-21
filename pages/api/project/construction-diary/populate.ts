@@ -7,6 +7,7 @@ import listBucketObjects from "@/utils/listBucketObjects";
 import s3ClientData from "@/utils/s3Client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { kv } from "@vercel/kv";
+
 import * as fs from "fs";
 
 type ResponseData = {
@@ -52,13 +53,6 @@ export default async function handler(
 			console.info("projectAndDate: ", projectAndDate);
 			console.error(e);
 		}
-	}
-
-	try {
-		fs.writeFileSync("test.txt", JSON.stringify(projectAssets, null, 2));
-		console.log("File written successfully");
-	} catch (err) {
-		console.error(err);
 	}
 
 	res.status(200).json({ message: "successfully sync s3 data to kv store" });

@@ -1,5 +1,6 @@
 import { Assets, DateObject } from "@/types/constructionDiary";
 import sortDate from "@/utils/sortConstructionDiaryDate";
+import getImageSize from "image-size-from-url";
 
 export function getProjects(paths: string[]) {
 	const projects: Record<string, string> = {};
@@ -91,15 +92,20 @@ export async function getProjectAssets(
 
 					// get image dimension
 					const src = `${assetsUrl}/${path}`;
-					// const dimension = await getImageDimension(bucketName, path);
-					const dimension = { width: 0, height: 0 };
+					const { width, height } = await getImageSize(src);
 					projectDatesRecords[
 						`${project}/${dateObject.year}_${dateObject.month}`
 					].images.push({
 						src,
 						fileName: path.split("/")[path.split("/").length - 1],
-						width: dimension?.width ? dimension.width : 0,
-						height: dimension?.height ? dimension.height : 0,
+						width,
+						height,
+					});
+					console.log("push:", {
+						src,
+						fileName: path.split("/")[path.split("/").length - 1],
+						width,
+						height,
 					});
 				}
 
