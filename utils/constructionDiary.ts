@@ -61,7 +61,7 @@ export async function getProjectAssets(
 	projectsDate: ReturnType<typeof getProjectsDates>,
 	paths: string[]
 ) {
-	const assetsUrl = process.env?.SOURCE_BASE_URL ?? "";
+	const assetsUrl = process.env?.MEDIA_BASE_URL ?? "";
 	const projectDatesRecords: Record<string, Assets> = {};
 	let pathsCopy = [...paths];
 

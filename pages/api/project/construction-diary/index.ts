@@ -1,12 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { kv } from "@vercel/kv";
 
-type ResponseData = {
-	message: string;
-};
-
-export default function handler(
+export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<ResponseData>
+	res: NextApiResponse<string[]>
 ) {
-	res.status(200).json({ message: "list of projects" });
+	const projects = await kv.get<string[]>("projects");
+	res.status(200).json(projects ?? []);
 }

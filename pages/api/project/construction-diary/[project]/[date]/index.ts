@@ -1,14 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { kv } from "@vercel/kv";
 
-type ResponseData = {
-	message: string;
-};
-
-export default function handler(
+export default async function handler(
 	req: NextApiRequest,
-	res: NextApiResponse<ResponseData>
+	res: NextApiResponse<any>
 ) {
-	res
-		.status(200)
-		.json({ message: "list of assets under this project and specific date!" });
+	const projectNameParam =
+		typeof req.query?.project === "string" ? req.query.project : "";
+	const dateParam =
+		typeof req.query?.project === "string" ? req.query.date : "";
+
+	const assets = await kv.get<string[]>(`${projectNameParam}/${dateParam}`);
+	res.status(200).json(assets);
 }
